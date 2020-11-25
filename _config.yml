@@ -1,8 +1,11 @@
 title: no style, please! # name of the site
-author: Riccardo Graziosi # name of site's author
-email: riccardo.graziosi97@gmail.com # email of site's author
-url: https://riggraz.dev # root address of the site
-baseurl: "/no-style-please" # subpath of the site, e.g. "/blog"
+author: kvsur # name of site's author
+email: hello1024lc@gmail.com # email of site's author
+repository: kvsur/kvsur.github.io
+github_url: https://github.com/kvsur
+url: https://kvsur.github.io
+# url: https://riggraz.dev # root address of the site
+baseurl: "/lee" # subpath of the site, e.g. "/blog"
 description: > # description of the site (multiple lines allowed)
   A (nearly) no-CSS, fast, minimalist Jekyll theme.
 
@@ -16,7 +19,7 @@ remote_theme: riggraz/no-style-please
 
 theme_config:
   appearance: "auto" # can be "light", "dark" or "auto"
-  back_home_text: ".." # customize text for homepage link in post layout
+  back_home_text: "<~~" # customize text for homepage link in post layout
   date_format: "%Y-%m-%d" # customize how date is formatted
   show_description: false # show blog description in home page
 
