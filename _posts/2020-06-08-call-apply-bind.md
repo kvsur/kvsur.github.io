@@ -5,7 +5,7 @@ category: javascript
 ---
 
 ### 1. call
-- call() 方法在使用一个指定的 this 值和若干个指定的参数值的前提下调用某个函数或方法。
+> call() 方法在使用一个指定的 this 值和若干个指定的参数值的前提下调用某个函数或方法。
 
 **function.call(thisArg, arg1, arg2, ...)**
 
@@ -39,7 +39,7 @@ Function.prototype.call2 = function(context) {
 
 ### 2. apply
 
-- apply 和 call的区别在于传递参数的方式不同
+> apply 和 call的区别在于传递参数的方式不同
 
 #### apply 实现
 ```javascript
@@ -66,7 +66,7 @@ Function.prototype.apply2 = function(context, arr) {
 
 ### 3.  bind
 
-- bind()会创建一个新的函数。当这个函数被调用时，bind()的第一个参数作为运行时的this，之后的一系列参数将会在运行时传递的实参前作为它的参数。
+> bind()会创建一个新的函数。当这个函数被调用时，bind()的第一个参数作为运行时的this，之后的一系列参数将会在运行时传递的实参前作为它的参数。
 
 #### bind的实现
 ```javascript
