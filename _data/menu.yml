@@ -2,21 +2,21 @@
 # https://github.com/riggraz/no-style-please#customize-the-menu
 
 entries:
-  - title: info
+  - title: 简介
     entries:
-      - title: a (nearly) no-CSS, fast, minimalist Jekyll theme.
-      - title: github repo
-        url: https://github.com/riggraz/no-style-please
-      - title: "used by <a href='https://riggraz.dev'>riggraz.dev</a> and <a href='https://github.com/riggraz/no-style-please/network/dependents'>many others</a>"
+      - title: 个人学习笔记本
+      - title: Github 
+        url: https://github.com/kvsur/kvsur.github.io
+      - title: "网站搭建模板参考 <a href='https://riggraz.dev'>riggraz.dev</a> 和 <a href='https://github.com/riggraz/no-style-please/network/dependents'>many others</a>"
 
-  - title: all posts
+  - title: 所有文章
     post_list:
-      limit: 5
+      limit: 10
       show_more: true
-      show_more_text: See archive...
+      show_more_text: 查看更多...
       show_more_url: archive.html
 
-  - title: posts by category
+  - title: 分类查看
     post_list:
       category: example2
       show_more: true
