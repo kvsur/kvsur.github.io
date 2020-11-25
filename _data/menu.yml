@@ -5,9 +5,6 @@ entries:
   - title: 简介
     entries:
       - title: 个人学习笔记本
-      - title: Github 
-        url: https://github.com/kvsur/kvsur.github.io
-      - title: "网站搭建模板参考 <a href='https://riggraz.dev'>riggraz.dev</a> 和 <a href='https://github.com/riggraz/no-style-please/network/dependents'>many others</a>"
 
   - title: 所有笔记
     post_list:
@@ -63,16 +60,18 @@ entries:
       category: others
       show_more_url: others-archive.html
 
-  - title: rss
-    url: feed.xml
+  # - title: rss
+  #   url: feed.xml
   
-  - title: another list
+  # - title: another list
+  #   entries:
+  #     - title: with subitems
+  #       entries:
+  #         - title: with subsubitems
+  #         - title: example page
+  #           url: about
+  - title: Links
     entries:
-      - title: with subitems
-        entries:
-          - title: with subsubitems
-          - title: example page
-            url: about
-  - title: PRO TIP
-    entries:
-      - title: to edit this menu, edit _data/menu.yml file
+      - title: Github 
+        url: https://github.com/kvsur/kvsur.github.io
+      - title: "网站搭建模板参考 <a href='https://github.com/riggraz/no-style-please'>no-style-please</a>"
