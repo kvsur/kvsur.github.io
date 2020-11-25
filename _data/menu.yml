@@ -72,6 +72,5 @@ entries:
   #           url: about
   - title: Links
     entries:
-      - title: Github 
-        url: https://github.com/kvsur/kvsur.github.io
-      - title: "网站搭建模板参考 <a href='https://github.com/riggraz/no-style-please'>no-style-please</a>"
+      - title: "<a target='_blank' href='https://github.com/kvsur/kvsur.github.io'>Github</a>"
+      - title: "网站搭建模板参考 <a href='https://github.com/riggraz/no-style-please' target='_blank'>no-style-please</a>"
