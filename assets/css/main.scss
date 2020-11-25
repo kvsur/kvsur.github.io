@@ -5,7 +5,13 @@
 
 div.highlighter-rouge>pre,div.highlighter-rouge pre.highlight,figure.highlight>pre,figure.highlight pre.highlight {
     margin: 0;
-    padding: 1em
+    padding: 1em;
+    font-family: Menlo,Monaco,Consolas,Courier New,monospace;
+    font-size: 15px;
+}
+
+code {
+    background-color: #252525;
 }
 
 .highlight table {
