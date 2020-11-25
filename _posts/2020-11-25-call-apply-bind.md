@@ -1,4 +1,8 @@
-[TOC]
+---
+layout: post
+title: "call-apply-bind-WIY"
+category: javascript
+---
 
 ### 1. call
 > call() 方法在使用一个指定的 this 值和若干个指定的参数值的前提下调用某个函数或方法。
