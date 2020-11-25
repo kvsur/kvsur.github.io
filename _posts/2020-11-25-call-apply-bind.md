@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "call-apply-bind-WIY"
+title: "实现函数的 call、apply、 bind 方法"
 category: javascript
 ---
 
