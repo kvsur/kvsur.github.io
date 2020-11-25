@@ -9,19 +9,59 @@ entries:
         url: https://github.com/kvsur/kvsur.github.io
       - title: "网站搭建模板参考 <a href='https://riggraz.dev'>riggraz.dev</a> 和 <a href='https://github.com/riggraz/no-style-please/network/dependents'>many others</a>"
 
-  - title: 所有文章
+  - title: 所有笔记
     post_list:
       limit: 10
       show_more: true
       show_more_text: 查看更多...
       show_more_url: archive.html
 
-  - title: 分类查看
+  - title: javascript
     post_list:
-      category: example2
+      category: javascript
       show_more: true
-      show_more_text: See more posts...
-      show_more_url: example2-archive.html
+      show_more_text: 查看更多...
+      show_more_url: javascript-archive.html
+
+  - title: css
+    post_list:
+      category: css
+      show_more_url: css-archive.html
+
+  - title: React
+    post_list:
+      category: react
+      show_more_url: react-archive.html
+
+  - title: Vue
+    post_list:
+      category: vue
+      show_more_url: vue-archive.html
+
+  - title: 算法
+    post_list:
+      category: algorithm
+      show_more_url: algorithm-archive.html
+
+  - title: 工具
+    post_list:
+      category: tools
+      show_more_url: tools-archive.html
+      
+  - title: 性能优化
+    post_list:
+      category: performance
+      show_more_url: performance-archive.html
+
+  - title: 网络相关
+    post_list:
+      category: network
+      show_more_url: network-archive.html
+
+  - title: 其他
+    post_list:
+      category: others
+      show_more_url: others-archive.html
 
   - title: rss
     url: feed.xml
