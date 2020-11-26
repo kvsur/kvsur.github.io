@@ -15,48 +15,73 @@ entries:
 
   - title: javascript
     post_list:
-      category: javascript
+      limit: 5
       show_more: true
       show_more_text: 查看更多...
+      category: javascript
       show_more_url: javascript-archive.html
 
   - title: css
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: css
       show_more_url: css-archive.html
 
   - title: React
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: react
       show_more_url: react-archive.html
 
   - title: Vue
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: vue
       show_more_url: vue-archive.html
 
   - title: 算法
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: algorithm
       show_more_url: algorithm-archive.html
 
   - title: 工具
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: tools
       show_more_url: tools-archive.html
       
   - title: 性能优化
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: performance
       show_more_url: performance-archive.html
 
   - title: 网络相关
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: network
       show_more_url: network-archive.html
 
   - title: 其他
     post_list:
+      limit: 5
+      show_more: true
+      show_more_text: 查看更多...
       category: others
       show_more_url: others-archive.html
 
