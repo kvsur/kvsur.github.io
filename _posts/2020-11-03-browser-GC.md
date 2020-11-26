@@ -6,8 +6,13 @@ category: performance
 
 ### 垃圾数据、变量声明周期
 ![b74f26bee0030feb81b66814318277c2.png](/assets/images/browser-gc1.png)
+此时将另一个对象赋值给a属性：
 
-***
+```javascript
+dog.a = new Object();
+```
+
+a的指向改变了，此时堆中的数组对象就成了不被使用的数据，专业名次叫做不可达的数据；
 ![984cb019b770cb6b7c9db7e2e6b2fc26.png](/assets/images/browser-gc2.png)
 
 
@@ -48,7 +53,15 @@ category: performance
 
 它使用 【标记->清除算法】
 
+1. 首相是标记
+ - 从一组跟元素开始，递归遍历这一组跟元素
+ - 在这个遍历过程中，能达到的元素称为活动对象，没有达到的元素可以判断为垃圾数据；
+
+2. 然后是垃圾清除
 ![a5282c936662de64eca2767e47316522.png](/assets/images/browser-gc3.png)
+直接将标记为垃圾的数据清理掉；
+
+3. 多次标记-清除🆑操纵后，会产生大量不连续的内粗碎片🧩，接下来就需要进行内存整理；
 
 ![162dc79fb14455869b2b8913b4312518.png](/assets/images/browser-gc4.png)
 
@@ -58,8 +71,15 @@ category: performance
 负责新生代垃圾的回收，通常只支持1~8M的容量；新生代被分为两个区域：一半是对象区，一般是空闲区域；
 
 ![9c98f210d1af9519b3027569d8c7842f.png](/assets/images/browser-gc5.png)
+1. 先给对象区域所有所有垃圾标记
+2. 标记完成之后，存活的对象被复制到空闲区，并进行一次有序的排列；
 ![cfe83bb9610b9db08cba72c2a7b9eec7.png](/assets/images/browser-gc6.png)
+副垃圾回收器没有内存碎片整理就是因为空闲区的对象都是有序的，没有碎片存在，也就不需要整理；
+3. 复制完成之后，对象区和空闲区会进行对调。将空闲区的对象放入对象区里面；
 ![d2dd36dfde8025381836e73d25edb495.png](/assets/images/browser-gc7.png)
+    以上就完成了垃圾回收。
+
+因为副垃圾回收器执行频繁，所以考虑到执行效率，一般新生区的空间都会被设置很小，一旦监测到空间满了就立即执行垃圾回收操作；
 
 
 ### 参考链接
