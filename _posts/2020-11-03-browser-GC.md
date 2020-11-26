@@ -5,10 +5,10 @@ category: performance
 ---
 
 ### 垃圾数据、变量声明周期
-![b74f26bee0030feb81b66814318277c2.png](evernotecid://472EC494-352B-4C5F-9060-D117B6B6187B/appyinxiangcom/26032217/ENResource/p21)
+![b74f26bee0030feb81b66814318277c2.png](/assets/images/browser-gc1.png)
 
 ***
-![984cb019b770cb6b7c9db7e2e6b2fc26.png](evernotecid://472EC494-352B-4C5F-9060-D117B6B6187B/appyinxiangcom/26032217/ENResource/p20)
+![984cb019b770cb6b7c9db7e2e6b2fc26.png](/assets/images/browser-gc2.png)
 
 
 ### V8 GC 算法
@@ -48,18 +48,18 @@ category: performance
 
 它使用 【标记->清除算法】
 
-![a5282c936662de64eca2767e47316522.png](evernotecid://472EC494-352B-4C5F-9060-D117B6B6187B/appyinxiangcom/26032217/ENResource/p22)
+![a5282c936662de64eca2767e47316522.png](/assets/images/browser-gc3.png)
 
-![162dc79fb14455869b2b8913b4312518.png](evernotecid://472EC494-352B-4C5F-9060-D117B6B6187B/appyinxiangcom/26032217/ENResource/p23)
+![162dc79fb14455869b2b8913b4312518.png](/assets/images/browser-gc4.png)
 
 
 **三、副垃圾回收器**
 
 负责新生代垃圾的回收，通常只支持1~8M的容量；新生代被分为两个区域：一半是对象区，一般是空闲区域；
 
-![9c98f210d1af9519b3027569d8c7842f.png](evernotecid://472EC494-352B-4C5F-9060-D117B6B6187B/appyinxiangcom/26032217/ENResource/p24)
-![cfe83bb9610b9db08cba72c2a7b9eec7.png](evernotecid://472EC494-352B-4C5F-9060-D117B6B6187B/appyinxiangcom/26032217/ENResource/p25)
-![d2dd36dfde8025381836e73d25edb495.png](evernotecid://472EC494-352B-4C5F-9060-D117B6B6187B/appyinxiangcom/26032217/ENResource/p26)
+![9c98f210d1af9519b3027569d8c7842f.png](/assets/images/browser-gc5.png)
+![cfe83bb9610b9db08cba72c2a7b9eec7.png](/assets/images/browser-gc6.png)
+![d2dd36dfde8025381836e73d25edb495.png](/assets/images/browser-gc7.png)
 
 
 ### 参考链接
