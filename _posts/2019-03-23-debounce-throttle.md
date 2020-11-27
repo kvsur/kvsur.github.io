@@ -5,7 +5,8 @@ category: algorithm
 ---
 
 1. debounce
-```javascript
+
+```js
 function debounce(fn, time) {
     let timer = null;
 
@@ -66,7 +67,8 @@ window.onload = function () {
 }
 ```
 2. throttle
-```javascript
+
+```js
 function throttle(fn, time) {
     let pre = +new Date;
 
