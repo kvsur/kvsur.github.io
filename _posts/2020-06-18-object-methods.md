@@ -229,19 +229,20 @@ if (!Object.keys) {
 > 可以使用Object.entries 返回值直接作为Map的构造函数参数
 
 **Object.is()**
-	Object.is-polliyf
-	```js
-		if (typeof Object.is !== 'function') {
-			Object.is = function(x, y) {
-				// 针对相同的值
-				if (x === y) {
-					return x !== 0 || 1/x === 1/y;
-				}
-				// 针对 NaN is NaN
-				return x !== x && y !== y;
+Object.is-polliyf
+
+```js
+	if (typeof Object.is !== 'function') {
+		Object.is = function(x, y) {
+			// 针对相同的值
+			if (x === y) {
+				return x !== 0 || 1/x === 1/y;
 			}
+			// 针对 NaN is NaN
+			return x !== x && y !== y;
 		}
-	```
+	}
+```
 
 ### 参考：
 [阮一峰-Object 对象](https://javascript.ruanyifeng.com/stdlib/object.html#toc0)
