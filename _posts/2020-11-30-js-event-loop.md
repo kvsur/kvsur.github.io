@@ -24,7 +24,7 @@ JS 引擎在运行时会提供了两个数据结构作为代码运行支撑：
 
 针对第2点，所有的代码段（Task）并非都是在第一时间push入栈，而是放置与特殊的队列中等待合适的时机被动push入栈，包括如下操作（对应的callback）：
 
-1. [setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout),[setInterval](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval),[setImmediate【nodejs｜IE】](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setImmediate),[requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/window/requestAnimationFrame),[I/O](https://developer.mozilla.org/zh-CN/docs/Mozilla/Projects/NSPR/Reference/I_O_Functions), UI rendering
+1. [setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout),[setInterval](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval),[setImmediate【nodejs｜IE】](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setImmediate),[requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/window/requestAnimationFrame),[I/O](https://developer.mozilla.org/zh-CN/docs/Mozilla/Projects/NSPR/Reference/I_O_Functions),[window.postMessage](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage), UI rendering
 
 2. [process.nextTick【nodejs】](https://nodejs.org/uk/docs/guides/event-loop-timers-and-nexttick/),[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise),[queueMicrotask](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask),[MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
 
@@ -36,7 +36,7 @@ JS 引擎在运行时会提供了两个数据结构作为代码运行支撑：
 
 事件循环对于两种队列中的Task处理机制是不尽相同的，下面具体介绍事件循环机制：
 
-**首相明确以下几点：**
+**首先明确以下几点：**
 - 一个Event Loop 里面有一个或者多任务队列（其实任务队列就是宏任务队列）
 - 一个 Event Loop 里面有一个微任务队列
 - 任务队列（task queue） = 宏任务队列（macrotask queue） != 微任务队列（microtask queue）
@@ -76,11 +76,60 @@ JS 引擎在运行时会提供了两个数据结构作为代码运行支撑：
 ![event-loop-one](/assets/images/event-loop-2.png)
 
 
+**Talk is cheap, show me the code;**
+
+```js
+function fn() {
+    console.log('start');
+    
+    setTimeout(function() {
+
+        queueMicrotask(() => {
+            console.log('microtask 0');
+        });
+
+        setTimeout(() => {
+            console.log('timeout 0 ')
+        }, 0);
+        console.log('timeout 1');
+    });
+
+    queueMicrotask(function() {
+
+        requestAnimationFrame(() => {
+            console.log('animation 1');
+
+            queueMicrotask(() => {
+                console.log('microtask 3');
+            });
+        });
+        console.log('microtask 1');
+
+        Promise.resolve().then(() => {
+            console.log('microtask 2');
+        });
+    });
+
+    new Promise((res, rej) => {
+
+        setTimeout(() => {
+            queueMicrotask(() => {
+                res('resolve 1');
+            })
+        }, 0);
+
+        console.log('promise directly');
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+fn();
+```
+
 ### 参考：
 
 - [Difference between microtask and macrotask within an event loop context](https://stackoverflow.com/questions/25915634/difference-between-microtask-and-macrotask-within-an-event-loop-context)
 - [多图生动详解浏览器与Node环境下的Event Loop](https://mp.weixin.qq.com/s/VZwAZcmAJGWeWrqRbiveaw)
 - [浏览器与Node的事件循环(Event Loop)有何区别?](https://github.com/ljianshu/Blog/issues/54)
 - [HTML 规范英文版](https://html.spec.whatwg.org/multipage/webappapis.html#task-queue)
-- [NodeJs事件循环](https://kvsur.github.io/nodejs-event-loop.html)
-
