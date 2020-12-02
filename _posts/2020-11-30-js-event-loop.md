@@ -382,6 +382,10 @@ function fn() {
 fn();
 ```
 
+![devtool-png](/assets/images/event-loop-devtool.png)
+
+<span>⚠️注意：requestAnimationFrame 对应的 callback 如果在debugger 模式下， devtool 与页面不在同一屏显示（如上图），则不会执行，因为这时候浏览器并未捕获到帧</span>
+
 ### 参考：
 
 - [Difference between microtask and macrotask within an event loop context](https://stackoverflow.com/questions/25915634/difference-between-microtask-and-macrotask-within-an-event-loop-context)
