@@ -26,7 +26,7 @@ JS 引擎在运行时会提供了两个数据结构作为代码运行支撑：
 
 1. [setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout),[setInterval](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval),[setImmediate【nodejs｜IE】](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setImmediate),[requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/window/requestAnimationFrame),[I/O](https://developer.mozilla.org/zh-CN/docs/Mozilla/Projects/NSPR/Reference/I_O_Functions),[window.postMessage](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage), UI rendering
 
-2. [process.nextTick【nodejs】](https://nodejs.org/uk/docs/guides/event-loop-timers-and-nexttick/),[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise),[queueMicrotask](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask),[MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
+2. [process.nextTick【nodejs】](https://nodejs.org/uk/docs/guides/event-loop-timers-and-nexttick/),[Promise.then](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise),[queueMicrotask](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask),[MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
 
 
 在这里分为两类是有原因的，上面说的到的特殊队列可以分为两类，分别对应：
