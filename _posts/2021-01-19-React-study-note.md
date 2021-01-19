@@ -30,11 +30,11 @@ category: react
 
 #### JSX -> DOM 的映射过程： createElement source code
 1. React.createElement 方法
+
 ```javascript
 /**
  101. React的创建元素方法
  */
-
 export function createElement(type, config, children) {
   // propName 变量用于储存后面需要用到的元素属性
   let propName; 
@@ -45,7 +45,6 @@ export function createElement(type, config, children) {
   let ref = null; 
   let self = null; 
   let source = null; 
-
   // config 对象中存储的是元素的属性
   if (config != null) { 
     // 进来之后做的第一件事，是依次对 ref、key、self 和 source 属性赋值
@@ -69,7 +68,6 @@ export function createElement(type, config, children) {
       }
     }
   }
-
   // childrenLength 指的是当前元素的子元素的个数，减去的 2 是 type 和 config 两个参数占用的长度
   const childrenLength = arguments.length - 2; 
   // 如果抛去type和config，就只剩下一个参数，一般意味着文本节点出现了
@@ -80,7 +78,6 @@ export function createElement(type, config, children) {
   } else if (childrenLength > 1) { 
     // 声明一个子元素数组
     const childArray = Array(childrenLength); 
-
     // 把子元素推进数组里
     for (let i = 0; i < childrenLength; i++) { 
       childArray[i] = arguments[i + 2];
@@ -97,7 +94,6 @@ export function createElement(type, config, children) {
       }
     }
   }
-
   // 最后返回一个调用ReactElement执行方法，并传入刚才处理过的参数
   return ReactElement(
     type,
@@ -111,9 +107,11 @@ export function createElement(type, config, children) {
 }
 ```
 
+
 ![React.createElement](/assets/images/React.creatElement.method.png)
 
 ![React.createElement.props](/assets/images/React.creatElement.props.png)
+
 
 2. ReactElement 函数
 
