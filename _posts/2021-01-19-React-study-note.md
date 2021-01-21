@@ -6,7 +6,7 @@ category: react
 
 ****
 
-### JSX 代码是如何“摇身一变”成为 DOM 的？
+### 一、JSX 代码是如何“摇身一变”成为 DOM 的？
 
 首先来确定下关于JSX 的三个核心问题：
 1. JSX的本质是什么？JSX 和 JS 是什么样的关系？
@@ -139,7 +139,7 @@ const ReactElement = function(type, key, ref, self, source, owner, props) {
 
 ****
 
-### React 16 为什么要对组件的生命周期进行调整更新？
+### 二、React 16 为什么要对组件的生命周期进行调整更新？
 组件在初始化时，会通过调用生命周期中的render方法，**生成VDOM**，然后在通过ReactDOM.render方法实现VDOM 到 DOM 的连接转换；
 
 > 生命周期的本质：组件的‘灵魂’于‘躯干’
@@ -173,5 +173,229 @@ const ReactElement = function(type, key, ref, self, source, owner, props) {
     3. commit 阶段 -> 可以使用DOM，执行副作用，安排更新
 5. 对于方法 getDerivedStateFromProps，v16.3 中只有 props 更新才会 被执行，但是在v16.4 版本及之后，setState 或则 froceUpdate 操作也同时会触发 其执行
 
-> [关于React v16 生命周期的更信息可参考官方引用的图谱](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+> [关于React v16 生命周期的更信息可参考官方引用的来源](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
 
+**getDerivedStateFromProps不是componentWillMount的替代品**
+其实这个API设计的目的是意图替代componentWillReceiveProps方法，从命名也可以得知，这个API的作用有且仅有一个，那就是从props中派生出state
+
+```javascript
+static getDerivedStateFromProps(props, state) {}
+```
+
+1. getDerivedStateFromProps 方法是静态 static 修饰， 这就意味着它是不能访问组件this的
+2. 参数props和state 分别对应当前来自父组件的props和当前组件的state状态
+3. getDerivedStateFromProps 需要一个对象格式返回值或者返回null， 其他形式则会抛出警告
+4. 返回值对象并不会对当前组件的state进行覆盖式更新，而是针对性的定向更新
+
+**消失的componentWillUpdate与新增的getSnapshotBeforeUpdate**
+1. 官方的意愿及推荐用法是结合 componentDidUpdate 使用 getSnapshotBeforeUpdate 方法
+2. getSnapshotBeforeUpdate 意在对VDOM connect 到DOM （render）获取快找（snapshot），例如 滚动位置
+3. componentWillMount 被取消的真正原因是不利于Fiber 架构的实现及优化
+
+#### Fiber 架构简介
+
+划重点：**Fiber会使得原本的同步渲染过程变成异步的**
+
+**在React v16之前，每一次更新的触发，都会促使React重新构建VDOM Tree，然后进行diff 操作，对DOM进行定向更新；但是这个过程是一个递归的过程，即使diff 优化使其时间复杂度达到O(n)，可不得不承认同步渲染的递归调用栈是很深的，只有最底层的调用完成之后才会返回上去；同步渲染进程一旦开启就没办法中止，这期间没法儿做其他事情，用户就无法处理其他的任何交互，因此如果渲染周期稍微变长的话，就能可能面临页面卡顿卡死的现象**
+
+以上面临的在问题，在React 16 引入的Fiber 架构中能狗很好的解决：
+1. Fiber 会将一个大的更新任务拆分为许多个小任务
+2. 每当执行完一个小任务时，渲染线程都会把主线程交回去，看看有没有优先级更高的任务需要处理
+3. 以上的机制让渲染工作变成“异步渲染”模式
+
+前面提到在React v16中生命周期被划分为多个阶段:
+1. render
+2. commit: 细分为re-commit、commit 两个阶段
+
+**总的来说就是render阶段可以被打断重启，而commit阶段则是同步执行；**
+也正是因为这样的机制，导致render阶段的生命周期是极大可能会被重复执行的
+
+- componentWillMount
+- componentWillUpdate
+- componentWillReceiveProps
+
+**Example：** 在componentWillReceiveProps中删除一个DOM 节点，如果重复执行的话则会操作多次；componentWillUpdate中发起一次付款，如果被多次执行则会多次付款
+
+****
+
+### 三、数据是如何在React组件中流动的？
+
+#### props 在父组件，子组件，兄弟组件通信中的应用
+
+通过在props中传递基础数据类型，复杂数据类型甚至回调函数的方式达到通信目的
+![React.props.communication](/assets/images/React.props.communication.png)
+
+但是使用props 通信是有缺点的且不是唯一的方式，当组件嵌套层太深的时候props 通信简直就是噩梦般的存在
+![React.props.communication](/assets/images/React.props.com.bad.png)
+
+#### 是时候使用[发布-订阅]模式了
+
+```javascript
+class EventEmitter {
+    constructor() {
+        this.eventMap = new Map()
+    }
+
+    on(eventName, handler) {
+        if (typeof handler !== 'function') throw new TypeError('handler must be a function');
+
+        if (!this.eventMap.get(eventName)) this.eventMap.set(eventName, []);
+
+        this.eventMap.get(eventName).push(handler);
+    }
+
+    emit(eventName, ...params) {
+        if (this.eventMap.get(eventName)) this.eventMap.get(eventName).forEach(handler => handler(...params));
+    }
+
+    off(eventName, handler) {
+        const listeners = this.eventMap.get(eventName);
+        if (listeners) {
+            listeners.splice(listeners.indexOf(handler) >>> 0, 1)
+        }
+    }
+}
+```
+
+#### React.createContext && Redux
+
+> [React Context](https://zh-hans.reactjs.org/docs/context.html#when-to-use-context)
+> [Use Redux](https://github.com/kvsur/DIY-Redux-Use-TypeScript)
+
+****
+
+### 四、React-Hooks 设计动机与工作模式
+
+类组件是面向对象编程思想的特征，主要就是封装及继承的思想。但是从另一个面来说，类组件相对沉重，且成本相对较大；
+
+> 函数组件会捕获 render 内部的状态，这是两类组件最大的不同。参考Dan 的文章[函数组件与类组件的不同](https://overreacted.io/how-are-function-components-different-from-classes/)
+
+**类组件与函数组件之间纵使有千差万别，但是最不能被忽略的是心智模型层面的差异，**是面向对象编程和函数式编程这两套不同设计思想之间的差异；这一理念说的更具体一点则是，**函数式组件更急契合React的设计理念**
+
+![React.design.mind](/assets/images/React.design.mind.png)
+
+React 组件本身的定位就是函数，一个吃进数据、吐出 UI 的函数。作为开发者，我们编写的是声明式的代码，而 React 框架的主要工作，就是及时地把声明式的代码转换为命令式的 DOM 操作，把数据层面的描述映射到用户可见的 UI 变化中去。这就意味着从原则上来讲，React 的数据应该总是紧紧地和渲染绑定在一起的，而类组件做不到这一点.
+
+函数组件真正地把数据和渲染绑定到了一起。
+
+经过岁月的洗礼，React 团队显然也认识到了，函数组件是一个更加匹配其设计理念、也更有利于逻辑拆分与重用的组件表达形式，接下来便开始“用脚投票”，用实际行动支持开发者编写函数式组件。于是，React-Hooks 便应运而生。
+
+#### 面试时Hooks的问题：为什么需要React-Hooks？
+1. 告别难以理解的class 组件（this、setState、 lifeCircle 的理解）
+2. 解决业务逻辑难以拆分的问题
+3. 使状态逻辑的复用变得简单可行（custom-hooks 自定义）
+4. 函数式组件的从设计思想上来看，更加符合React的理念 （UI = f(data)）
+
+但是值得注意的是，React-Hooks 并非银弹，纵使它有很多优点，不过还是有一些问题是hooks 力所不能及的：
+- 比如像类组件中的componentDidCatch、getSnapshotBeforeUpdate
+- 组件逻辑的过度自由，过度分散也不是好事
+- Hooks 在使用层面有严格的约束规则（顺利问题）
+
+### 五、深入React Hooks 背后的工作机制："原则"的背后是"原理"
+
+React-Hooks 有如下两个使用原则：
+- Hooks 只能在函数组件中使用
+- 不要在循环、条件或者嵌套函数中使用（调用）Hooks
+
+第一个点是很明显的，对于第二个点，可以从hook的实现原理层面来解释：
+
+```typescript
+useState<S>(
+      initialState: (() => S) | S,
+    ): [S, Dispatch<BasicStateAction<S>>] {
+    currentHookNameInDev = 'useState';
+    mountHookTypesDev();
+    const prevDispatcher = ReactCurrentDispatcher.current;
+    ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnMountInDEV;
+    try {
+    return mountState(initialState);
+    } finally {
+    ReactCurrentDispatcher.current = prevDispatcher;
+    }
+}
+// ...
+function mountState<S>(
+  initialState: (() => S) | S,
+): [S, Dispatch<BasicStateAction<S>>] {
+  const hook = mountWorkInProgressHook();
+  if (typeof initialState === 'function') {
+    // $FlowFixMe: Flow doesn't like mixed types
+    initialState = initialState();
+  }
+  hook.memoizedState = hook.baseState = initialState;
+  const queue = (hook.queue = {
+    pending: null,
+    dispatch: null,
+    lastRenderedReducer: basicStateReducer,
+    lastRenderedState: (initialState: any),
+  });
+  const dispatch: Dispatch<
+    BasicStateAction<S>,
+  > = (queue.dispatch = (dispatchAction.bind(
+    null,
+    currentlyRenderingFiber,
+    queue,
+  ): any));
+  return [hook.memoizedState, dispatch];
+}
+//...
+function mountWorkInProgressHook(): Hook {
+  const hook: Hook = {
+    memoizedState: null,
+
+    baseState: null,
+    baseQueue: null,
+    queue: null,
+
+    next: null,
+  };
+  if (workInProgressHook === null) {
+    // This is the first hook in the list
+    currentlyRenderingFiber.memoizedState = workInProgressHook = hook;
+  } else {
+    // Append to the end of the list
+    workInProgressHook = workInProgressHook.next = hook;
+  }
+  return workInProgressHook;
+}
+//...
+useState<S>(
+      initialState: (() => S) | S,
+    ): [S, Dispatch<BasicStateAction<S>>] {
+    currentHookNameInDev = 'useState';
+    updateHookTypesDev();
+    const prevDispatcher = ReactCurrentDispatcher.current;
+    ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV;
+    try {
+    return updateState(initialState);
+    } finally {
+    ReactCurrentDispatcher.current = prevDispatcher;
+    }
+}
+// ...
+function updateState<S>(
+  initialState: (() => S) | S,
+): [S, Dispatch<BasicStateAction<S>>] {
+  return updateReducer(basicStateReducer, (initialState: any));
+}
+//...
+```
+
+从上面的源代码 mountWorkInProgressHook 函数中可一看到，**每一个hook就是一个Node节点，所有一个组件中所有的hooks就是一个单向链表**；
+所有的Hooks 方法都会对应的调用 mountXXX 函数，这些函数里面都是统一调用了 mountWorkInProgressHook 这个函数的；与之对应的还有updateXXX 函数
+
+### 六、 React 使用VDOM 是为了性能么？
+
+首先来明确两个点： 
+- VDOM 是js 对象
+- VDOM 是对 真实 DOM 的描述
+
+其次：
+- **挂载阶段：** React 将结合 JSX 的描述，构建出虚拟 DOM 树，然后通过 ReactDOM.render 实现虚拟 DOM 到真实 DOM 的映射（触发渲染流水线）
+- **更新阶段：** 页面的变化在作用于真实 DOM 之前，会先作用于虚拟 DOM，虚拟 DOM 将在 JS 层借助算法先对比出具体有哪些真实 DOM 需要被改变，然后再将这些改变作用于真实 DOM
+
+**虚拟 DOM 解决的关键问题有以下两个：**
+1. 研发体验/研发效率的问题：这一点前面已经反复强调过，DOM 操作模式的每一次革新，背后都是前端对效率和体验的进一步追求。虚拟 DOM 的出现，为数据驱动视图这一思想提供了高度可用的载体，使得前端开发能够基于函数式 UI 的编程方式实现高效的声明式编程
+2. 跨平台的问题：虚拟 DOM 是对真实渲染内容的一层抽象。若没有这一层抽象，那么视图层将和渲染平台紧密耦合在一起，为了描述同样的视图内容，你可能要分别在 Web 端和 Native 端写完全不同的两套甚至多套代码。但现在中间多了一层描述性的虚拟 DOM，它描述的东西可以是真实 DOM，也可以是iOS 界面、安卓界面、小程序......同一套虚拟 DOM，可以对接不同平台的渲染逻辑，从而实现“一次编码，多端运行”，如下图所示。其实说到底，跨平台也是研发提效的一种手段，它在思想上和1是高度呼应的
+
+![vdom.diff.platform.png](vdom.diff.platform.png)
