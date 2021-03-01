@@ -152,7 +152,7 @@ const ReactElement = function(type, key, ref, self, source, owner, props) {
 2. 更新阶段：(当更新由父组件触发时多一个生命周期：**componentWillReceiveProps**)、shouldComponentUpdate、**componentWillUpdate**、render、componentDidUpdate
 3. 组件卸载：componentWillUnmounted 
 
-![react v15 lifecircle](/assets/images/lifecircle.15.png)
+![react v15 lifecircle](/assets/images/React.lifecircle.15.png)
 
 关于 componentWillReceiveProps(nextProps) 生命周期方法的触发需要注意⚠️的是：
 1. componentWillReceiveProps 并不是由 props 的变化触发的，而是由父组件的更新触发的。
@@ -398,4 +398,4 @@ function updateState<S>(
 1. 研发体验/研发效率的问题：这一点前面已经反复强调过，DOM 操作模式的每一次革新，背后都是前端对效率和体验的进一步追求。虚拟 DOM 的出现，为数据驱动视图这一思想提供了高度可用的载体，使得前端开发能够基于函数式 UI 的编程方式实现高效的声明式编程
 2. 跨平台的问题：虚拟 DOM 是对真实渲染内容的一层抽象。若没有这一层抽象，那么视图层将和渲染平台紧密耦合在一起，为了描述同样的视图内容，你可能要分别在 Web 端和 Native 端写完全不同的两套甚至多套代码。但现在中间多了一层描述性的虚拟 DOM，它描述的东西可以是真实 DOM，也可以是iOS 界面、安卓界面、小程序......同一套虚拟 DOM，可以对接不同平台的渲染逻辑，从而实现“一次编码，多端运行”，如下图所示。其实说到底，跨平台也是研发提效的一种手段，它在思想上和1是高度呼应的
 
-![vdom.diff.platform.png](/assets/images/vdom.diff.platform.png)
+![React.vdom.diff.platform.png](/assets/images/React.vdom.diff.platform.png)
