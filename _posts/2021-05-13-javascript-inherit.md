@@ -29,6 +29,14 @@ SubType.prototype.getSubProperty = function() {
 
 const instance = new SubType();
 
+```
+
+原型继承存在的问题：
+1. 如果原型中有引用的值，则引用会在所有实例之间共享
+2. SubType 在实例化时不能给SuperType 传入参数
+
+```bash
+
 
                 |---------------------|
                 |       instance      |
@@ -76,6 +84,100 @@ const instance = new SubType();
 
 ```
 
-#### 2. 
+#### 2. 借用构造函数
+为了解决原型包含引用值的问题。通过call 或者 apply 的方式在子类中调用父类，因为父类其实也是函数；
+
+```js
+function Super(name) {
+    this.name = name;
+}
+
+function Sub(name, age) {
+    Super.call(this, name);
+    this.age = age;
+}
+```
+
+借用构造函数存在的问题：
+1. Super的方法不能继承使用
+2. Sub 也不能在Super 实例上定义方法
+
+#### 3. 组合继承
+组合继承（伪经典继承）综合了原型链和借用构造函数的优缺点，通过原型链继承父类原型的属性和方法，通过借用构造函数继承父类实例属性；
+
+
+#### 4. 原型式继承
+
+使用Object.create 方法达到进程的目的
+
+```js
+let person = {
+name: "Nicholas",
+friends: ["Shelby", "Court", "Van"]
+};
+let anotherPerson = Object.create(person, { name: {
+        value: "Greg"
+      }
+});
+console.log(anotherPerson.name); // "Greg"
+```
+
+#### 5. 寄生式继承
+```js
+function inheritMethod(origin) {
+    const clone = Object.create(origin);
+
+    clone.say = function () {
+        return 'hello world!!!';
+    }
+
+    return clone;
+}
+```
+
+
+#### 6. 寄生式组合继承
+
+```js
+function Super(name) {
+    this.name = name;
+    this.friends = [];
+}
+
+Super.prototype.makeFriends = function(friend) {
+    this.friends.push(friend);
+    console.log(this.friends.join(','));
+}
+
+function Sub(name, age) {
+    // 继承 获取Super 的属性
+    Super.call(this, name);
+
+    this.age = age;
+}
+
+
+// // 继承 获取 Super 的方法
+// Sub.prototype = new Super();
+// // 继承 重定向construtor 指向Sub 自身
+// Sub.prototype.constructor = Sub;
+
+// 以上两步可以用 inheritPrototype 实现
+inheritPrototype(Sub, Super);
+
+Sub.prototype.showSelf = function() {
+    console.log(`Hi, My name is ${this.name}, and I'm ${this.age} years old.`);
+}
+
+function inheritPrototype(subType, superType) {
+    const prototype = Object.create(superType.prototype);
+    prototype.constructor = subType;
+    subType.prototype = prototype;
+}
+
+const sub = new Sub('licheng', 26);
+
+console.log(sub.friends);
+```
 
 ### class 类对象的继承
