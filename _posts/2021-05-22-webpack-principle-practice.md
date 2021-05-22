@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "webpack 原理与实践"
-category: webpack
+category: tools
 ---
 
 ### webpack 解决了什么问题？

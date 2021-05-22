@@ -1,3 +1,9 @@
+---
+layout: post
+title: "BFC"
+category: css
+---
+
 BFC 就是块级格式化上下文（Block Formatting Context），是页面盒子模型中的一种渲染模式，相当于一个独立的容器，这个容器里面的元素和外面的元素互不影响；
 
 **创建BFC 的方式有多种：**
