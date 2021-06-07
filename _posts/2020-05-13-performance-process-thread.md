@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "进程&&线程"
-category: others
+category: performance
 ---
 
 ### 进程
