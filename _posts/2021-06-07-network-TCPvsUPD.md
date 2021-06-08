@@ -10,7 +10,7 @@ category: network
 
 在本文中，将涉及到的内容： 
 
-- [tcp/ip网络模型](#tcp/ip网络模型)
+- [tcp/ip网络模型](#tcp\/ip网络模型)
 - [什么是tcp？](#什么是tcp)
 - [什么是udp？](#什么是udp)
 - [主要的不同点](#主要的不同点)
@@ -78,7 +78,19 @@ udp协议的工作方式几乎与tcp相似，不同的是udp摒弃了所有的�
 #### tcp是怎么工作的
 [回到顶部](#tcp对比udp有什么不同之处)
 
-tcp建立连接需要有三次握手机制，三次握手是一个发起和确认连接的过程；一旦连接建立之后，数据便开始传输；当传输过程完成之后，通过关闭建立好的虚拟线路来终止连接；
+tcp建立连接需要有三次握手机制，三次握手是一个发起和确认连接的过程；一旦连接建立之后，数据便开始传输；当传输过程完成之后，借助四次握手机制， 通过关闭建立好的虚拟线路来终止连接；
+
+三次握手流程：（一开始client处于closed状态，server处于listen状态）
+1. 建立连接时候 client 发送 syn 同步序列号 包到服务器（syn=x），然后状态更新为syn_send，等待server确认并返回；
+2. server收到 client 的 syn 包（状态更新为 receive_syn）后进行确认包返回（ack=x+1），同时server也要发送一个syn包（syn=y），即发送的包就是（syn + ack），状态更新为 syn_send；
+3. client收到server的syn+ack包，状态更新为receive_syn，然后向server发送 ack(ack = y + 1)，状态更新为send_ack，server收到ack包后状态更新为receive_ack;最后一个包发送完成并被收到之后client和server的状态都更新为 established;
+
+![threetimes_shakehand](https://bkimg.cdn.bcebos.com/pic/a1ec08fa513d26977c74304855fbb2fb4316d87b?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U3Mg==,g_7,xp_5,yp_5/format,f_auto)
+
+三次握手中的一些重要的概念：
+1. 未连接队列：在三次握手协议中，服务器维护一个未连接队列，该队列为每个客户端的SYN包（syn=j）开设一个条目，该条目表明服务器已收到SYN包，并向客户发出确认，正在等待客户的确认包。这些条目所标识的连接在服务器处于Syn_RECV状态，当服务器收到客户的确认包时，删除该条目，服务器进入ESTABLISHED状态。
+2. SYN-ACK重传次数：服务器发送完SYN－ACK包，如果未收到客户确认包，服务器进行首次重传，等待一段时间仍未收到客户确认包，进行第二次重传，如果重传次数超过系统规定的最大重传次数，系统将该连接信息从半连接队列中删除。注意，每次重传等待的时间不一定相同。
+3. 半连接存活时间：是指半连接队列的条目存活的最长时间，也即服务从收到SYN包到确认这个报文无效的最长时间，该时间值是所有重传请求包的最长等待时间总和。有时我们也称半连接存活时间为Timeout时间、SYN_RECV存活时间
 
 #### udp是怎么工作的
 [回到顶部](#tcp对比udp有什么不同之处)
