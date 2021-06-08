@@ -6,8 +6,11 @@ category: network
 
 ###  tcp对比udp有什么不同之处
 
+> [TCP vs UDP: What's the Difference?](https://www.guru99.com/tcp-vs-udp-understanding-the-difference.html#1)
+
 在本文中，将涉及到的内容： 
 
+- [tcp/ip网络模型](#tcp/ip网络模型)
 - [什么是tcp？](#什么是tcp)
 - [什么是udp？](#什么是udp)
 - [主要的不同点](#主要的不同点)
@@ -23,11 +26,38 @@ category: network
 - [udp的劣势](#udp的劣势)
 - [什么时候使用tcp、udp？](#什么时候使用tcp和udp)
 
+#### tcp/ip网络模型
+[回到顶部](#tcp对比udp有什么不同之处)
+
+> [OSI 七层模型和TCP/IP模型及对应协议（详解）](https://blog.csdn.net/qq_41923622/article/details/85805003)
+
+计算机与网络设备要相互通信，双方就必须基于相同的方法。比如，如何探测到通信目标、由哪一边先发起通信、使用哪种语言进行通信、怎样结束通信等规则都需要事先确定。不同的硬件、操作系统之间的通信，所有的这一切都需要一种规则。而我们就把这种规则称为协议（protocol）。
+TCP/IP 是互联网相关的各类协议族的总称，比如：TCP，UDP，IP，FTP，HTTP，ICMP，SMTP 等都属于 TCP/IP 族内的协议。
+TCP/IP模型是互联网的基础，它是一系列网络协议的总称。
+
+这些协议可以划分为四层，分别为链路层、网络层、传输层和应用层。
+- 链路层：负责封装和解封装IP报文，发送和接受ARP/RARP报文等；
+- 网络层：负责路由以及把分组报文发送给目标网络或主机；
+- 传输层：负责对报文进行分组和重组，并以TCP或UDP协议格式封装报文；
+- 应用层：负责向用户提供应用程序，比如HTTP、FTP、Telnet、DNS、SMTP等；
+
+![process](https://img-blog.csdnimg.cn/20190105161812494.gif)
+
+![table](https://img-blog.csdnimg.cn/20190105164025264.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTIzNjIy,size_16,color_FFFFFF,t_70)
+
+![header](https://img-blog.csdnimg.cn/20190105164101657.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTIzNjIy,size_16,color_FFFFFF,t_70)
+
+![7-5-1](https://img-blog.csdnimg.cn/20190105165022790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTIzNjIy,size_16,color_FFFFFF,t_70)
+
+![7-5-2](https://img-blog.csdnimg.cn/20190105165116628.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTIzNjIy,size_16,color_FFFFFF,t_70)
+
+![7-5-3](https://img-blog.csdnimg.cn/20190105165204409.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTIzNjIy,size_16,color_FFFFFF,t_70)
+
 #### 什么是tcp
 [回到顶部](#tcp对比udp有什么不同之处)
 
-tcp/IP 决定指定的计算机如何连接网络并且如何在这之间进行数据的传输；能在多个计算机连接网络间创建虚拟网络；
-tcp/IP 代表的是 Transmission Control Protocol/Internet Protocol，是一种为了在端对端提供可靠字节流传输而设计的网络协议；
+传输控制协议（TCP，Transmission Control Protocol）是一种面向连接的、可靠的、基于字节流的传输层通信协议，由IETF的RFC 793 定义。
+TCP旨在适应支持多网络应用的分层协议层次结构。 连接到不同但互连的计算机通信网络的主计算机中的成对进程之间依靠TCP提供可靠的通信服务。TCP假设它可以从较低级别的协议获得简单的，可能不可靠的数据报服务。 原则上，TCP应该能够在从硬线连接到分组交换或电路交换网络的各种通信系统之上操作。
 
 #### 什么是udp
 [回到顶部](#tcp对比udp有什么不同之处)
@@ -74,18 +104,18 @@ udp：
 #### tcp与udp之间的不同
 [回到顶部](#tcp对比udp有什么不同之处)
 
-|tcp|udp|
-|:--:|:--:|
-|面向连接的协议|无连接协议|
-|将数据读取为字节流，and the message is transmitted to segment boundaries|udp消息包含着数据包，一个接一个发送，达到时检测完整性|
-|tcp消息通过网络（Internet）从一台计算机传输到另一台计算机|udp不是基于连接的，所以应用程序可以一次性发送大量数据包给另一方|
-|tcp会对数据包按照指定的顺序重排|udp不会干预数据包顺序，仅仅取决于数据包本身|
-|Request Header 限制大小20字节|Request Header 限制大小8 字节|
-|tcp是重量级协议，正式数据发送之前需要三次握手建立连接|udp是轻量级的，没有连接追踪，数据排序等机制|
-|tcp有错误的处理和恢复机制|udp执行错误检测，但是会废弃错误的数据包|
-|ACK机制|没有ACK机制|
-|tcp是可靠的，保证数据传送到目标路由|udp无法保证数据传输到指定路由目标|
-|tcp提供了广泛的错误检测机制，进行数据流的控制和确认（ACK）|udp只有一个用来统计数据包总数的错误检测机制|
+|tcp|udp| 备注 |
+|:--:|:--:|:--:|
+|面向连接的协议|无连接协议| |
+|将数据读取为字节流，and the message is transmitted to segment boundaries|udp消息包含着数据包，一个接一个发送，达到时检测完整性| |
+|tcp消息通过网络（Internet）从一台计算机传输到另一台计算机|udp不是基于连接的，所以应用程序可以一次性发送大量数据包给另一方| |
+|tcp会对数据包按照指定的顺序重排|udp不会干预数据包顺序，仅仅取决于数据包本身| |
+|Request Header 限制大小20字节|Request Header 限制大小8 字节| |
+|tcp是重量级协议，正式数据发送之前需要三次握手建立连接|udp是轻量级的，没有连接追踪，数据排序等机制| |
+|tcp有错误的处理和恢复机制|udp执行错误检测，但是会废弃错误的数据包| |
+|ACK机制|没有ACK机制| |
+|tcp是可靠的，保证数据传送到目标路由|udp无法保证数据传输到指定路由目标| |
+|tcp提供了广泛的错误检测机制，进行数据流的控制和确认（ACK）|udp只有一个用来统计数据包总数的错误检测机制| |
 
 #### tcp的应用
 [回到顶部](#tcp对比udp有什么不同之处)
