@@ -87,12 +87,24 @@ tcp建立连接需要有三次握手机制，三次握手是一个发起和确�
 2. server收到 client 的 syn 包（状态更新为 receive_syn）后进行确认包返回（ack=x+1），同时server也要发送一个syn包（syn=y），即发送的包就是（syn + ack），状态更新为 syn_send；
 3. client收到server的syn+ack包，状态更新为receive_syn，然后向server发送 ack(ack = y + 1)，状态更新为send_ack，server收到ack包后状态更新为receive_ack;最后一个包发送完成并被收到之后client和server的状态都更新为 established;
 
-![threetimes_shakehand](https://img-blog.csdn.net/20150603155505255)
+![threeway-handshake](https://bkimg.cdn.bcebos.com/pic/a1ec08fa513d26977c74304855fbb2fb4316d87b?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U3Mg==,g_7,xp_5,yp_5/format,f_auto)
 
 三次握手中的一些重要的概念：
 1. 未连接队列：在三次握手协议中，服务器维护一个未连接队列，该队列为每个客户端的SYN包（syn=j）开设一个条目，该条目表明服务器已收到SYN包，并向客户发出确认，正在等待客户的确认包。这些条目所标识的连接在服务器处于Syn_RECV状态，当服务器收到客户的确认包时，删除该条目，服务器进入ESTABLISHED状态。
 2. SYN-ACK重传次数：服务器发送完SYN－ACK包，如果未收到客户确认包，服务器进行首次重传，等待一段时间仍未收到客户确认包，进行第二次重传，如果重传次数超过系统规定的最大重传次数，系统将该连接信息从半连接队列中删除。注意，每次重传等待的时间不一定相同。
 3. 半连接存活时间：是指半连接队列的条目存活的最长时间，也即服务从收到SYN包到确认这个报文无效的最长时间，该时间值是所有重传请求包的最长等待时间总和。有时我们也称半连接存活时间为Timeout时间、SYN_RECV存活时间
+
+四次挥手流程：
+1. client 发送一个FIN，用于关闭client 到 server 的数据传输；
+2. server 收到 FIN 之后返回一个ACk，确认序列号为FIN + 1，和SYN序列号一样，一个FIN将占用一个序列号；
+3. server 发送一个 FIN 给 client；
+4. client 收到 FIN 后放回 ACK （FIN + 1）；
+
+server 收到 ack 之后 更新状态问题 CLOSED，client 发送完 ACK 之后需要等待2MSL才能更行状态为CLOSED；
+
+> [为什么TCP4次挥手时等待为2MSL？](https://www.zhihu.com/question/67013338)
+
+![fourway-handshake](https://bkimg.cdn.bcebos.com/pic/b58f8c5494eef01fca1e8886e0fe9925bc317d6f?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxMTY=,g_7,xp_5,yp_5/format,f_auto)
 
 #### udp是怎么工作的
 [回到顶部](#tcp对比udp有什么不同之处)
@@ -124,7 +136,7 @@ udp：
 |将数据读取为字节流，and the message is transmitted to segment boundaries|udp消息包含着数据包，一个接一个发送，达到时检测完整性| |
 |tcp消息通过网络（Internet）从一台计算机传输到另一台计算机|udp不是基于连接的，所以应用程序可以一次性发送大量数据包给另一方| |
 |tcp会对数据包按照指定的顺序重排|udp不会干预数据包顺序，仅仅取决于数据包本身| |
-|Request Header 限制大小20字节|Request Header 限制大小8 字节| |
+|Request Header 限制大小至少20字节|Request Header 限制大小8 字节| |
 |tcp是重量级协议，正式数据发送之前需要三次握手建立连接|udp是轻量级的，没有连接追踪，数据排序等机制| |
 |tcp有错误的处理和恢复机制|udp执行错误检测，但是会废弃错误的数据包| |
 |ACK机制|没有ACK机制| |
