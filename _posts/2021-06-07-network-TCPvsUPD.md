@@ -87,7 +87,7 @@ tcp建立连接需要有三次握手机制，三次握手是一个发起和确�
 2. server收到 client 的 syn 包（状态更新为 receive_syn）后进行确认包返回（ack=x+1），同时server也要发送一个syn包（syn=y），即发送的包就是（syn + ack），状态更新为 syn_send；
 3. client收到server的syn+ack包，状态更新为receive_syn，然后向server发送 ack(ack = y + 1)，状态更新为send_ack，server收到ack包后状态更新为receive_ack;最后一个包发送完成并被收到之后client和server的状态都更新为 established;
 
-![threeway-handshake](https://bkimg.cdn.bcebos.com/pic/a1ec08fa513d26977c74304855fbb2fb4316d87b?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U3Mg==,g_7,xp_5,yp_5/format,f_auto)
+![threeway-handshake](/assets/images/threeway-handshake.gif)
 
 三次握手中的一些重要的概念：
 1. 未连接队列：在三次握手协议中，服务器维护一个未连接队列，该队列为每个客户端的SYN包（syn=j）开设一个条目，该条目表明服务器已收到SYN包，并向客户发出确认，正在等待客户的确认包。这些条目所标识的连接在服务器处于Syn_RECV状态，当服务器收到客户的确认包时，删除该条目，服务器进入ESTABLISHED状态。
@@ -104,7 +104,7 @@ server 收到 ack 之后 更新状态问题 CLOSED，client 发送完 ACK 之后
 
 > [为什么TCP4次挥手时等待为2MSL？](https://www.zhihu.com/question/67013338)
 
-![fourway-handshake](https://bkimg.cdn.bcebos.com/pic/b58f8c5494eef01fca1e8886e0fe9925bc317d6f?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxMTY=,g_7,xp_5,yp_5/format,f_auto)
+![fourway-handshake](/assets/images/fourway-handshake.jpg)
 
 #### udp是怎么工作的
 [回到顶部](#tcp对比udp有什么不同之处)
