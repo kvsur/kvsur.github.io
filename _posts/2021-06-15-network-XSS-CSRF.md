@@ -42,7 +42,7 @@ XSS 结合 Ajax 技术进行攻击是最常用的方式，一个典型的场景�
 
 CSRF 可以简单的理解为：**攻击者盗用了已完成认证用户的身份，以其名义发送恶意请求**，容易造成个人隐私泄露及财产安全；
 
-！[csrf-process.png](/assets/images/csrf-process.jpg)
+![csrf-process.png](/assets/images/csrf-process.jpg)
 
 如上图所示，完成一次CSRF攻击，其中必要的流程包括但不限于：
 - 用户登录受信任的网站，并在本地生成cookie信息；
