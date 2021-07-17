@@ -39,3 +39,22 @@ category: performance
 
 **名词：**
 1. IPC （Inter-Process Communication）
+
+**Chrome 架构：**
+
+1. 主进程
+2. 插件进程
+3. 网络进程
+4. 备用渲染进程
+5. GPU 进程
+6. Storage 进程
+7. Audio Service 进程
+8. 代码编译工具进程（V8）
+9. Tab 渲染进程
+    1. GUI 渲染线程
+    2. JS引擎线程
+    3. 事件触发线程
+    4. 定时触发线程
+    5. 异步http线程
+
+浏览器页面加载完成触发顺序：DOMContentLoaded(dom) -> load(dom cssom image)
