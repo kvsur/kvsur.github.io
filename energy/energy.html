@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仿蚂蚁森林能量</title>
+    <style>
+        #energy {
+            height: calc(100vh - 60px);
+            width: 100vw;
+            border: 1px solid silver;
+        }
+        #energy-circle {
+            cursor: pointer;
+            position: absolute;
+            z-index: 2;
+            text-align: center;
+            font-weight: bold;
+            color: green;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 13px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(345deg, #8eff12, #e2e2e2);
+            box-shadow: inset -2px -3px 4px green, inset 4px 4px 5px #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div id="energy-circle">
+        绿色<br/>能量
+    </div>
+    <div id="energy"></div>
+    <script src="./energy.js" type="module"></script>
+</body>
+</html>
